@@ -1,6 +1,6 @@
-dataset/*
 database
 __pycache__/*
+model.pyc
 server.crt
 server.csr
 server.key
