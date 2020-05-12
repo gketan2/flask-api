@@ -23,17 +23,17 @@ def signup():
     """
 
     data = request.get_json()
-    print(data)
     uname, enc_pass = data['username'], data['password']
 
     user_id = server.register_user(uname, enc_pass)
     if user_id == "username_exists":
         status = 902
+        responsemessage = "username exists"
     else:
         status = 900
+        responsemessage = "success"
 
-    data = {'username': uname, 'responsecode': status}
-    print(data)
+    data = {'username': uname, 'responsemessage' : responsemessage , 'responsecode': status}
     data = json.dumps(data)
     return data
 
@@ -48,7 +48,6 @@ def verify_login():
     """
 
     data = request.get_json()
-    print(data)
     uname, enc_pass = data['username'], data['password']
 
     matched = server.verify_user(uname, enc_pass)
@@ -64,7 +63,6 @@ def verify_login():
 
     data = {'username': uname, 'responsecode': status,
         'responsemessage': response}
-    print(data)
     data = json.dumps(data)
     return data
 
@@ -78,7 +76,6 @@ def register_movies():
     """
 
     data = request.get_json()
-    print(data)
     uname, tmdb_ids = data['username'], data['tmdb_ids']
     ratings = data['ratings']
 
@@ -92,7 +89,6 @@ def register_movies():
         responsemessage = "ok"
 
     data = {'responsecode': status, 'responsemessage': responsemessage}
-    print(data)
     data = json.dumps(data)
     return data
 
@@ -105,7 +101,6 @@ def get_user_movies():
     """
 
     data = request.get_json()
-    print(data)
     uname = data['username']
 
     check = server.check_user(uname)
@@ -128,7 +123,6 @@ def get_user_movies():
 
     data = {'responsecode': status, 'responsemessage': responsemessage,
         'tmdb_ids': tmdb_ids, 'names': movie_names, 'ratings': ratings}
-    print(data)
     data = json.dumps(data)
     return data
 
@@ -141,7 +135,6 @@ def get_popular_movies():
     """
 
     data = request.get_json()
-    print(data)
     num_movies = data['num_movies']
     try:
         genre = data['genre']
@@ -161,7 +154,6 @@ def get_popular_movies():
 
     data = {'responsecode': 200, 'responsemessage': "ok",
         'tmdb_ids': tmdb_ids, 'names': movie_names}
-    print(data)
     data = json.dumps(data)
     return data
 
@@ -174,7 +166,6 @@ def movies_similar_to():
     """
 
     data = request.get_json()
-    print(data)
     tmdb_ids, num_rec = data['tmdb_ids'], data['num_result']
 
     movie_ids = server.get_movie_ids(tmdb_ids)
@@ -187,7 +178,6 @@ def movies_similar_to():
     recc_movie_names = server.get_movie_names(recc_movie_ids)
 
     data = {'tmdb_ids': recc_tmdb_ids, 'names': recc_movie_names}
-    print(data)
     data = json.dumps(data)
     return data
 
@@ -200,7 +190,6 @@ def recommend_movies_to_user():
     """
 
     data = request.get_json()
-    print(data)
     uname = data['username']
 
     check = server.check_user(uname)
@@ -363,9 +352,9 @@ def search_tv():
 def root():
     return "I'm gROOT"
 
-
+# main function to start server
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=False, ssl_context=('server.crt','server.key'))
+    app.run(host='127.0.0.1', port=5000, debug=True, ssl_context=('server.crt','server.key'))
 
     if 'popularity.csv' not in os.listdir('dataset/'):
         print('popularity.csv not present')

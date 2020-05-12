@@ -4,12 +4,12 @@ from model import movies, links
 
 
 def get_tmdb_id(movie_id):
-    id = links[links.movieId==movie_id].tmdbId
-    return int(id.item())
+	id = links[links.movieId==movie_id].tmdbId
+	return int(id.item())
 
 
 def get_movie_id(tmdb_id):
-    id = links[links.tmdbId==tmdb_id].movieId
+    id = links[links.tmdbId==int(tmdb_id)].movieId
     return int(id.item())
 
 

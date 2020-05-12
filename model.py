@@ -31,7 +31,7 @@ def get_recommendations(movie_list):
 
 	for Id,rating in movie_list:
 		try:
-			similar_movies = similar_movies.append(get_similar(Id,rating),ignore_index = True)
+			similar_movies = similar_movies.append(get_similar(Id,float(rating)),ignore_index = True)
 			ids.append(Id)
 		except KeyError:
 			pass
